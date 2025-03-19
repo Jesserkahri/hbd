@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, #ffa6c1 0, #ffa6c1 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 75% 75%, #ffa6c1 0, #ffa6c1 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 75% 25%, #ffccd5 0, #ffccd5 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 25% 75%, #ffccd5 0, #ffccd5 2%, transparent 2.5%) 0 0/4em 4em,
+                linear-gradient(45deg, #ffe6eb, #fff0f3);
+            font-family: Arial, sans-serif;
+            color: #ff4081;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: floatHeart 15s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-20vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-front {
+            background: linear-gradient(45deg, #ff6b6b, #ffc3a0);
+            border: 2px solid white;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        #reset-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #ff6b6b, #ffc3a0);
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #reset-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff4081;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border: 3px solid #ff4081;
+        }
+
+        .back-button:hover {
+            background: #ff4081;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .victory-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .victory-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 64, 129, 0.3);
+            animation: victoryPop 0.5s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+            max-width: 80%;
+        }
+
+        .victory-title {
+            font-size: 2.5rem;
+            color: #ff4081;
+            margin: 0 0 1rem 0;
+        }
+
+        .victory-emoji {
+            font-size: 4rem;
+            margin: 1rem 0;
+        }
+
+        @keyframes victoryPop {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        #peek-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #peek-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        #peek-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ff4081;
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            perspective: 1000px;
+            max-width: 800px;
+            margin: 2rem auto;
+            z-index: 1;
+        }
+
+        .memory-card {
+            position: relative;
+            height: 150px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transform: scale(1);
+            transition: transform 0.5s;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.2);
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.3);
+        }
+
+        .memory-card.flip {
+            transform: rotateY(180deg);
+        }
+
+        .front-face,
+        .back-face {
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+            position: absolute;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 3px solid #ff4081;
+            box-sizing: border-box;
+        }
+
+        .front-face {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #ff4081, #ff80ab);
+            color: white;
+        }
+
+        .back-face {
+            background: white;
+            border: 3px solid #ff4081;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-face::before {
+            content: '❤️';
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.1;
+        }
+
+        .victory-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.3);
+            z-index: 1000;
+            animation: modalPop 0.5s ease-out;
+        }
+
+        @keyframes modalPop {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .victory-modal h2 {
+            color: #ff4081;
+            margin-bottom: 1rem;
+        }
+
+        .victory-modal button {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .victory-modal button:hover {
+            background: #ff80ab;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts"></div>
+    <a href="me.html" class="back-button">×</a>
+    <h1>Mini game to test ur memory babe</h1>
+    
+    <!-- Add audio elements -->
+    <audio id="flipSound" src="flip.m4a"></audio>
+    <audio id="matchSound" src="match.m4a"></audio>
+    <audio id="noMatchSound" src="notmatch.m4a"></audio>
+    <audio id="winSound" src="win.m4a"></audio>
+    
+    <div class="button-container">
+        <button id="peek-button" onclick="peekCards()">A3ml talla sari3a 👀</button>
+        <button id="reset-button">Reset Game</button>
+    </div>
+
+    <div class="game-board"></div>
+    
+    <div class="victory-modal">
+        <div class="victory-card">
+            <h2 class="victory-title">Sahiiiit pookie!</h2>
+            <div class="victory-emoji">🎉</div>
+            <p>Hak rbeht tstehl bousa hehe</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>hint : you're pretty💖</p>
+    </footer>
+
+    <script>
+        const cards = [
+            '🐶', '🐶',
+            '🐱', '🐱',
+            '🐭', '🐭',
+            '🐹', '🐹',
+            '🐰', '🐰',
+            '🦊', '🦊',
+            '🐻', '🐻',
+            'you', 'pretty'
+        ];
+
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let matchedPairs = 0;
+        let peekUsed = false;
+
+        // Sound functions
+        function playSound(soundId) {
+            const sound = document.getElementById(soundId);
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log("Sound play failed:", e));
+            }
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function peekCards() {
+            if (peekUsed) return;
+            
+            const allCards = document.querySelectorAll('.card');
+            playSound('flipSound');
+
+            // Flip all cards
+            allCards.forEach(card => card.classList.add('flipped'));
+
+            // Disable peek button
+            const peekButton = document.getElementById('peek-button');
+            peekButton.disabled = true;
+            peekUsed = true;
+
+            // Hide all cards after 1 second
+            setTimeout(() => {
+                allCards.forEach(card => {
+                    if (!card.classList.contains('matched')) {
+                        card.classList.remove('flipped');
+                    }
+                });
+            }, 1000);
+        }
+
+        function showVictoryModal() {
+            const modal = document.querySelector('.victory-modal');
+            modal.style.display = 'flex';
+            playSound('winSound');
+
+            // Auto-hide modal and reset game after 3 seconds
+            setTimeout(() => {
+                modal.style.display = 'none';
+                createBoard();
+            }, 9000);
+        }
+
+        function createBoard() {
+            const gameBoard = document.querySelector('.game-board');
+            gameBoard.innerHTML = '';
+            matchedPairs = 0;
+            peekUsed = false;
+            const peekButton = document.getElementById('peek-button');
+            peekButton.disabled = false;
+            shuffle(cards);
+            cards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.icon = card;
+                cardElement.innerHTML = '<div class="card-inner"><div class="card-front"></div><div class="card-back">' + card + '</div></div>';
+                cardElement.addEventListener('click', flipCard);
+                gameBoard.appendChild(cardElement);
+            });
+        }
+
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+
+            playSound('flipSound');
+            this.classList.add('flipped');
+
+            if (!firstCard) {
+                firstCard = this;
+                return;
+            }
+            secondCard = this;
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            // Special case for "you" and "pretty"
+            let isMatch = firstCard.dataset.icon === secondCard.dataset.icon ||
+                         (firstCard.dataset.icon === 'you' && secondCard.dataset.icon === 'pretty') ||
+                         (firstCard.dataset.icon === 'pretty' && secondCard.dataset.icon === 'you');
+
+            if (isMatch) {
+                playSound('matchSound');
+                firstCard.classList.add('matched');
+                secondCard.classList.add('matched');
+                disableCards();
+                matchedPairs++;
+                
+                // Check if all pairs are matched
+                if (matchedPairs === cards.length / 2) {
+                    setTimeout(showVictoryModal, 500);
+                }
+            } else {
+                playSound('noMatchSound');
+                unflipCards();
+            }
+        }
+
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+            resetBoard();
+        }
+
+        function unflipCards() {
+            lockBoard = true;
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                resetBoard();
+            }, 1500);
+        }
+
+        function resetBoard() {
+            [firstCard, secondCard, lockBoard] = [null, null, false];
+        }
+
+        document.getElementById('reset-button').addEventListener('click', () => {
+            createBoard();
+            playSound('flipSound');
+            document.querySelector('.victory-modal').style.display = 'none';
+        });
+        
+        createBoard();
+
+        // Add floating hearts
+        function createFloatingHearts() {
+            const heartsContainer = document.querySelector('.floating-hearts');
+            const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '💝'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.opacity = Math.random() * 0.3 + 0.3;
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        createFloatingHearts();
+    </script>
+</body>
+</html> 

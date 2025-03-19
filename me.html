@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Time Together</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff5f7 0%, #fce4ec 100%);
+            color: #ff4081;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Animated background with hearts and shapes */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .animated-bg-item {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.4;
+            animation: float 25s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% { transform: translate(0, -100px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Main content */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: #ff4081;
+            text-shadow: 3px 3px 6px rgba(255, 64, 129, 0.2);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff4081, transparent);
+        }
+        
+        .timer-container {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 1.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            margin: 0 auto 2.5rem auto;
+            max-width: 600px;
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .timer-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(255, 64, 129, 0.25);
+        }
+        
+        .timer {
+            font-size: 1.8rem;
+            margin: 1rem 0;
+            display: none;
+            font-weight: 500;
+        }
+        
+        /* Grid layout for buttons */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .menu-item {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.15);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 64, 129, 0.25);
+            background: rgba(255, 255, 255, 0.7);
+        }
+        
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 60%);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .menu-item:hover::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .menu-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.5s ease;
+        }
+        
+        .menu-item:hover .menu-icon {
+            transform: scale(1.2);
+        }
+        
+        .menu-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ff4081;
+        }
+        
+        .menu-description {
+            font-size: 1rem;
+            color: #ff7aa2;
+            max-width: 80%;
+        }
+        
+        /* Special animation for the wheel item */
+        .wheel-item .menu-icon {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Timer button styles */
+        .timer-button {
+            background: linear-gradient(135deg, #ff4081, #ff80ab);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(255, 64, 129, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(255, 64, 129, 0.4);
+        }
+        
+        .timer-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .timer-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+        }
+        
+        .timer-button:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Footer styles */
+        footer {
+            margin-top: 3rem;
+            padding: 1rem;
+            font-size: 1.1rem;
+            color: #ff6b9b;
+            font-weight: 500;
+        }
+        
+        footer p {
+            position: relative;
+            display: inline-block;
+        }
+        
+        footer p::before,
+        footer p::after {
+            content: '💖';
+            margin: 0 0.5rem;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .timer {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="background" id="animated-background"></div>
+    
+    <div class="main-container">
+        <h1>Heyooooo pookie explore the website :3</h1>
+        
+        <!-- Timer section -->
+        <div class="timer-container">
+            <button onclick="toggleTimer()" id="timerButton" class="timer-button">Chouf 9adeh b9ina m3a b3dhna nananana</button>
+            <div class="timer" id="timer">
+                0 Years, 0 Months, 0 Days, 0 Hours, 0 Minutes, 0 Seconds
+            </div>
+        </div>
+        
+        <!-- Menu grid -->
+        <div class="menu-grid">
+            <a href="page.html" class="menu-item">
+                <div class="menu-icon">📖</div>
+                <div class="menu-title">Our Love Story</div>
+            </a>
+            
+            <a href="page1.html" class="menu-item">
+                <div class="menu-icon">✨</div>
+                <div class="menu-title">Why I Love You</div>
+            </a>
+            
+            <a href="envelopes.html" class="menu-item">
+                <div class="menu-icon">💌</div>
+                <div class="menu-title">Open When Letters</div>
+
+            </a>
+            
+            <a href="wheel.html" class="menu-item wheel-item">
+                <div class="menu-icon">🎡</div>
+                <div class="menu-title">Spin For A Surprise!</div>
+            </a>
+            
+            <a href="memory.html" class="menu-item">
+                <div class="menu-icon">🎮</div>
+                <div class="menu-title">Memory Game</div>
+            </a>
+            
+            <a href="puzzle.html" class="menu-item">
+                <div class="menu-icon">🧩</div>
+                <div class="menu-title">Love Puzzle</div>
+            </a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>made with love for my pookie</p>
+    </footer>
+
+    <script>
+        // Set fixed anniversary date: May 19, 2024 at 15:00
+        const startTime = new Date('2024-05-19T00:00:00').getTime();
+        let timerInterval;
+        let isTimerVisible = false;
+
+        function toggleTimer() {
+            const timerElement = document.getElementById('timer');
+            const button = document.getElementById('timerButton');
+            isTimerVisible = !isTimerVisible;
+
+            if (isTimerVisible) {
+                timerElement.style.display = 'block';
+                button.textContent = 'Hide';
+                updateTimer();
+                timerInterval = setInterval(updateTimer, 1000);
+            } else {
+                timerElement.style.display = 'none';
+                button.textContent = 'Show ';
+                clearInterval(timerInterval);
+            }
+        }
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const difference = now - startTime;
+
+            if (difference < 0) {
+                document.getElementById('timer').innerHTML = "Counting down to our special day...";
+                return;
+            }
+
+            // Calculate time units
+            const seconds = Math.floor(difference / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30.436875); // Average month length
+            const years = Math.floor(months / 12);
+
+            const displayYears = years;
+            const displayMonths = months % 12;
+            const displayDays = Math.floor(days % 30.436875);
+            const displayHours = hours % 24;
+            const displayMinutes = minutes % 60;
+            const displaySeconds = seconds % 60;
+
+            document.getElementById('timer').innerHTML = 
+                `${displayYears} Years, ${displayMonths} Months, ${displayDays} Days, 
+                 ${displayHours} Hours, ${displayMinutes} Minutes, ${displaySeconds} Seconds`;
+        }
+
+        // Create animated background elements
+        function createAnimatedBackground() {
+            const background = document.getElementById('animated-background');
+            const items = ['❤️', '💖', '💕', '💗', '💓', '💝', '🌸', '✨', '🎀', '🌟'];
+            const count = 40;
+            
+            for (let i = 0; i < count; i++) {
+                const item = document.createElement('div');
+                item.className = 'animated-bg-item';
+                item.textContent = items[Math.floor(Math.random() * items.length)];
+                
+                // Random positioning and animation
+                const size = Math.random() * 1.5 + 0.5; // Random size between 0.5 and 2
+                item.style.fontSize = `${size}rem`;
+                item.style.left = `${Math.random() * 100}%`;
+                item.style.animationDuration = `${Math.random() * 15 + 15}s`; // 15-30s duration
+                item.style.animationDelay = `${Math.random() * 15}s`;
+                
+                background.appendChild(item);
+            }
+        }
+
+        // Initialize
+        createAnimatedBackground();
+    </script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open When Letters | From My Heart to Yours</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, #ffa6c1 0, #ffa6c1 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 75% 75%, #ffa6c1 0, #ffa6c1 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 75% 25%, #ffccd5 0, #ffccd5 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 25% 75%, #ffccd5 0, #ffccd5 2%, transparent 2.5%) 0 0/4em 4em,
+                linear-gradient(45deg, #ffe6eb, #fff0f3);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: #ff4081;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-title h1 {
+            font-size: 3rem;
+            color: #ff2e6d;
+            text-shadow: 3px 3px 0px rgba(255, 192, 203, 0.8);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-title p {
+            font-size: 1.2rem;
+            color: #ff6b9d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: floatHeart 15s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-20vh) scale(1.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(255, 118, 152, 0.3),
+                        inset 0 0 20px rgba(255, 255, 255, 0.4);
+            border: 3px dashed #ff80ab;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            background: linear-gradient(45deg, #ff4081, transparent, #ff80ab, transparent, #ff4081);
+            border-radius: 30px;
+            z-index: -1;
+            opacity: 0.5;
+            background-size: 300% 300%;
+            animation: gradientBorder 8s linear infinite;
+        }
+
+        @keyframes gradientBorder {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 300% 300%;
+            }
+        }
+
+        .envelopes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4rem;
+            padding: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .envelopes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .envelopes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .envelope-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1.4/1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-card:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+
+        .envelope-front {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #ff4081, #ff80ab);
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.3);
+            border: 3px solid #ff4081;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .envelope-front::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='white' opacity='0.1' d='M50 0 L100 50 L50 100 L0 50 Z'/%3E%3C/svg%3E");
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .envelope-card:nth-child(even) .envelope-front {
+            background: linear-gradient(135deg, #ff80ab, #ff4081);
+        }
+
+        .envelope-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .envelope-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            animation: bounce 2s infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .envelope-front::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s;
+            pointer-events: none;
+        }
+
+        .envelope-card:hover .envelope-front::before {
+            opacity: 0.2;
+            animation: shine 1.5s ease-in-out;
+        }
+
+        @keyframes shine {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(0deg);
+            }
+            50% {
+                opacity: 0.2;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.5) rotate(360deg);
+            }
+        }
+
+        /* Letter modal */
+        .letter-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 192, 203, 0.7);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .letter-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .letter-content {
+            background: white;
+            max-width: 90%;
+            width: 500px;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 50px rgba(255, 64, 129, 0.4);
+            border: 3px solid #ff4081;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ff4081;
+            text-align: center;
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%23ff80ab' opacity='0.1' d='M10 0 L20 10 L10 20 L0 10 Z'/%3E%3C/svg%3E");
+        }
+
+        .letter-modal.active .letter-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .message-signature {
+            margin-top: 1.5rem;
+            font-style: italic;
+            color: #ff80ab;
+            font-size: 1.1rem;
+        }
+
+        .close-letter {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+        }
+
+        .close-letter:hover {
+            background: #ff80ab;
+            transform: rotate(90deg);
+        }
+
+        .letter-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: #ff4081;
+            text-shadow: 1px 1px 2px rgba(255, 64, 129, 0.2);
+        }
+
+        .letter-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ff4081;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
+            transition: all 0.3s ease;
+            z-index: 20;
+            border: 2px solid white;
+        }
+
+        .back-button:hover {
+            background: #ff80ab;
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4);
+        }
+
+        .love-message {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #ff4081;
+            text-shadow: 1px 1px 2px white;
+            z-index: 10;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        .heart-beat {
+            display: inline-block;
+            animation: heartBeat 1.5s infinite;
+            transform-origin: center;
+        }
+
+        @keyframes heartBeat {
+            0% {
+                transform: scale(1);
+            }
+            14% {
+                transform: scale(1.3);
+            }
+            28% {
+                transform: scale(1);
+            }
+            42% {
+                transform: scale(1.3);
+            }
+            70% {
+                transform: scale(1);
+            }
+        }
+        
+        .ribbon {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 70px;
+            z-index: -1;
+        }
+        
+        .ribbon::before, .ribbon::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 50px;
+            border-radius: 50% 50% 0 0;
+        }
+        
+        .ribbon::before {
+            left: 0;
+            background: #ff4081;
+            transform: rotate(-30deg) translateX(-5px);
+        }
+        
+        .ribbon::after {
+            right: 0;
+            background: #ff4081;
+            transform: rotate(30deg) translateX(5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts"></div>
+    
+    <div class="page-title">
+        <h1>Open When Letters</h1>
+        <p>A little piece of my heart for whenever you need it most. Each envelope holds my love for you. 💕</p>
+    </div>
+
+    <div class="container">
+        <div class="envelopes-grid">
+            <div class="envelope-card" onclick="openLetter('miss-me', '💌', 'Open When You Miss Me', 'Kol d9i9a tt3ada w ahna b3ad 3la b3dhna, N5ammm fik. Remember that my heart is always with you, no matter the distance. Enti awel thought tjini el sbeh ki nfi9 .. w e5er haja 3la beli kbal mnor9d. ❤️', 'Forever yours, with all my love')">
+                <div class="envelope-front">
+                    <div class="envelope-emoji">💌</div>
+                    <div class="envelope-title">Open When</div>
+                    <div>You Miss Me</div>
+                </div>
+                <div class="ribbon"></div>
+            </div>
+    
+            <div class="envelope-card" onclick="openLetter('sad', '🌧️', 'Open When You\'re Sad', 'Hey beautiful, remember that this feeling is temporary. You\'re stronger than you know, and I\'m always here for you. Your smile lights up my world, and I can\'t wait to see it again. You\'ve got this! 🌟', 'Sending sunshine your way')">
+                <div class="envelope-front">
+                    <div class="envelope-emoji">🌧️</div>
+                    <div class="envelope-title">Open When</div>
+                    <div>You're Sad</div>
+                </div>
+                <div class="ribbon"></div>
+            </div>
+    
+            <div class="envelope-card" onclick="openLetter('motivation', '🔥', 'Open When You Need Motivation', 'You are capable of amazing things. I believe in you with all my heart. Every step forward is progress, and I\'m so proud of everything you do.Yaatik sa7a Keep shining pookie 💪✨', 'Always cheering for you')">
+                <div class="envelope-front">
+                    <div class="envelope-emoji">🔥</div>
+                    <div class="envelope-title">Open When</div>
+                    <div>You Need Motivation</div>
+                </div>
+                <div class="ribbon"></div>
+            </div>
+    
+            <div class="envelope-card" onclick="openLetter('lonely', '🤗', 'Open When You Feel Lonely', 'You\'re never alone, my love. I\'m right here, thinking of you, caring for you, loving you. Ena m3ak dima Our hearts are connected no matter how far apart we may be. Sending you the biggest ta3ni9a electroniya ! 🤗💕', 'With love and warmth')">
+                <div class="envelope-front">
+                    <div class="envelope-emoji">🤗</div>
+                    <div class="envelope-title">Open When</div>
+                    <div>You Feel Lonely</div>
+                </div>
+                <div class="ribbon"></div>
+            </div>
+    
+            <div class="envelope-card" onclick="openLetter('smile', '😊', 'Open When You Need a Smile', 'TTfkr ka lmarra ki jina mrwhin men nebl d5alt fi tfol gawri wena kont mtghchch alik ama ki ritk mott bdh7k dh7akt ena zeda? Your laugh is my favorite sound in the world. I hope thinking of our silly moments together brings a smile to your beautiful face! 😊✨', 'Smiling with you always')">
+                <div class="envelope-front">
+                    <div class="envelope-emoji">😊</div>
+                    <div class="envelope-title">Open When</div>
+                    <div>You Need a Smile</div>
+                </div>
+                <div class="ribbon"></div>
+            </div>
+    
+            <div class="envelope-card" onclick="openLetter('proud', '🌟', 'Open When You\'re Proud of Yourself', 'I knew you could do it! I\'m so incredibly proud of you and all that you achieve. Your determination and strength never cease to amaze me. Keep reaching for the stars! 🌟👏', 'Proud of you, always')">
+                <div class="envelope-front">
+                    <div class="envelope-emoji">🌟</div>
+                    <div class="envelope-title">Open When</div>
+                    <div>You're Proud of Yourself</div>
+                </div>
+                <div class="ribbon"></div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+
+    <a href="me.html" class="back-button">x</a>
+
+    <script>// Add this at the bottom of your HTML file, inside a <script> tag
+
+        function openLetter(id, emoji, title, message, signature) {
+            // Check if modal already exists, if not create it
+            let modal = document.getElementById('letter-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'letter-modal';
+                modal.className = 'letter-modal';
+                
+                const content = document.createElement('div');
+                content.className = 'letter-content';
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'close-letter';
+                closeBtn.innerHTML = '×';
+                closeBtn.onclick = closeLetter;
+                
+                content.appendChild(closeBtn);
+                modal.appendChild(content);
+                document.body.appendChild(modal);
+            }
+            
+            // Update content
+            const content = modal.querySelector('.letter-content');
+            content.innerHTML = `
+                <button class="close-letter" onclick="closeLetter()">×</button>
+                <div class="letter-emoji">${emoji}</div>
+                <div class="letter-title">${title}</div>
+                <div>${message}</div>
+                <div class="message-signature">${signature}</div>
+            `;
+            
+            // Show modal with animation
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
+        }
+        
+        function closeLetter() {
+            const modal = document.getElementById('letter-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+        
+        // Add floating hearts
+        function createFloatingHearts() {
+            const heartsContainer = document.querySelector('.floating-hearts');
+            const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '💝'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.opacity = Math.random() * 0.3 + 0.3;
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        createFloatingHearts();
+    </script>
+</body>
+</html> 

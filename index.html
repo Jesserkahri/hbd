@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome My Love</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+        
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffcad4 0%, #ffe5ec 50%, #ffcad4 100%);
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+        }
+
+        .hearts-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 105, 180, 0.4);
+            animation: float 15s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            text-align: center;
+            max-width: 90%;
+            width: 320px;
+            backdrop-filter: blur(10px);
+            border: 3px solid #ff4081;
+            animation: popIn 0.5s cubic-bezier(0.26, 0.53, 0.74, 1.48);
+        }
+
+        .title {
+            font-size: 1.8rem;
+            color: #ff4081;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
+        }
+
+        .subtitle {
+            color: #ff6b8b;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .hint-text {
+            color: #ff6b8b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+            opacity: 0.8;
+            min-height: 2.4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-display {
+            width: 180px;
+            height: 45px;
+            font-size: 1.3rem;
+            text-align: center;
+            border: 2px solid #ff4081;
+            border-radius: 25px;
+            margin: 0 auto 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 3px;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 1rem;
+            max-width: 260px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .key {
+            background: linear-gradient(45deg, #ff4081, #ff6b8b);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .key:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.4);
+        }
+
+        .key:active {
+            transform: translateY(0);
+        }
+
+        .key.delete {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        }
+
+        .key.enter {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+
+        .error-message {
+            color: #ff4081;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .love-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        .hint-button {
+            background: linear-gradient(45deg, #ff4081, #ff6b8b);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.8rem;
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 3px 10px rgba(255, 64, 129, 0.3);
+        }
+
+        .hint-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="hearts-container"></div>
+    
+    <div class="login-container">
+        <div class="love-emoji">💖</div>
+        <h1 class="title">Welcome My Love</h1>
+        <p class="subtitle">Enter our special number to continue</p>
+        <div class="password-display" id="password-display">****</div>
+        <p class="hint-text" id="hint-text">Click the hint button for a clue! 💝</p>
+        <div class="keypad">
+            <button class="key" onclick="addNumber('1')">1</button>
+            <button class="key" onclick="addNumber('2')">2</button>
+            <button class="key" onclick="addNumber('3')">3</button>
+            <button class="key" onclick="addNumber('4')">4</button>
+            <button class="key" onclick="addNumber('5')">5</button>
+            <button class="key" onclick="addNumber('6')">6</button>
+            <button class="key" onclick="addNumber('7')">7</button>
+            <button class="key" onclick="addNumber('8')">8</button>
+            <button class="key" onclick="addNumber('9')">9</button>
+            <button class="key delete" onclick="deleteNumber()">←</button>
+            <button class="key" onclick="addNumber('0')">0</button>
+            <button class="key enter" onclick="checkPassword()">✓</button>
+        </div>
+        <button class="hint-button" onclick="showHint()">💡 Get a Hint</button>
+        <p class="error-message" id="error-message">Incorrect number, try again!</p>
+    </div>
+
+    <script>
+        // Create floating hearts background
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartSymbols = ['❤️', '💖', '💕', '💓', '💘', '💗', '💝'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDuration = `${15 + Math.random() * 10}s`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(heart);
+            }
+        }
+
+        // Password hints
+        const passwords = [
+            { number: '19052024', hint: '3id miled zawezna' },
+        ];
+
+        let currentHintIndex = 0;
+        let currentPassword = '';
+
+        function addNumber(num) {
+            if (currentPassword.length < 8) {
+                currentPassword += num;
+                updateDisplay();
+            }
+        }
+
+        function deleteNumber() {
+            if (currentPassword.length > 0) {
+                currentPassword = currentPassword.slice(0, -1);
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            const display = document.getElementById('password-display');
+            display.textContent = currentPassword.padEnd(8, '*');
+        }
+
+        function showHint() {
+            const hintText = document.getElementById('hint-text');
+            hintText.textContent = passwords[currentHintIndex].hint;
+            currentHintIndex = (currentHintIndex + 1) % passwords.length;
+        }
+
+        function checkPassword() {
+            const errorMessage = document.getElementById('error-message');
+            
+            if (currentPassword.length !== 8) {
+                errorMessage.textContent = 'Please enter 8 digits';
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 2000);
+                return;
+            }
+
+            const isCorrect = passwords.some(p => p.number === currentPassword);
+            
+            if (isCorrect) {
+                window.location.href = 'me.html';
+            } else {
+                errorMessage.textContent = 'Incorrect number, try again!';
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        // Initialize hearts
+        createHearts();
+    </script>
+</body>
+</html> 

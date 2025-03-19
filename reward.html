@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Special Gift</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: 
+                radial-gradient(circle at 25% 25%, #ff6b8b 0, #ff6b8b 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 75% 75%, #ff6b8b 0, #ff6b8b 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 75% 25%, #ff9eaf 0, #ff9eaf 2%, transparent 2.5%) 0 0/4em 4em,
+                radial-gradient(circle at 25% 75%, #ff9eaf 0, #ff9eaf 2%, transparent 2.5%) 0 0/4em 4em,
+                linear-gradient(#ffe6eb, #ffe6eb);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .gift-container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.2);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gift-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                rgba(255, 107, 139, 0.1) 0%,
+                rgba(255, 64, 129, 0.1) 100%);
+            z-index: -1;
+        }
+
+        h1 {
+            color: #ff4081;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .message {
+            font-size: 1.2rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .special-text {
+            font-size: 1.8rem;
+            color: #ff4081;
+            font-weight: bold;
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 2px dashed #ff4081;
+            border-radius: 10px;
+            background: rgba(255, 64, 129, 0.1);
+        }
+
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-100px) rotate(180deg);
+            }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff4081;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border: 3px solid #ff4081;
+        }
+
+        .back-button:hover {
+            background: #ff4081;
+            color: white;
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+    <a href="me.html" class="back-button">×</a>
+    <div class="hearts"></div>
+    <div class="gift-container">
+        <h1>🎉 Congratulations, My Love! 🎉</h1>
+        <div class="message">
+            You've completed all the puzzles! That shows how patient and persistent you are - just some of the many reasons why I love you so much. 💖
+        </div>
+        <div class="special-text">
+            You get a special date with me! 🥰<br>
+            Anywhere you want to go, anything you want to do!<br>
+            I'm all yours! 💑
+        </div>
+        <div class="message">
+            Thank you for being the most amazing person in my life.<br>
+            I love you more than words can express! 💕
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const hearts = document.querySelector('.hearts');
+            const heartEmojis = ['❤️', '💖', '💕', '💗', '💓'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+                hearts.appendChild(heart);
+            }
+        }
+
+        createHearts();
+
+        // Verify completion
+        if (!localStorage.getItem('completedPuzzles') || 
+            new Set(JSON.parse(localStorage.getItem('completedPuzzles'))).size < 10) {
+            window.location.href = 'puzzle.html';
+        }
+    </script>
+</body>
+</html> 

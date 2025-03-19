@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Story</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #ffeef8;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 24 24' fill='%23ffcce6' opacity='0.3'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%23ff99cc' opacity='0.2'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            color: #633974;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #e84393;
+            text-shadow: 2px 2px 4px rgba(232, 67, 147, 0.2);
+            margin: 0;
+            padding: 1rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header::before {
+            content: '❤️';
+            position: absolute;
+            font-size: 4rem;
+            top: -30px;
+            left: 30%;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .header::after {
+            content: '❤️';
+            position: absolute;
+            font-size: 3.5rem;
+            top: -20px;
+            right: 30%;
+            opacity: 0.6;
+            animation: float 5s ease-in-out infinite 1s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(-5deg); }
+        }
+
+        .timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #fd79a8, #a29bfe);
+            transform: translateX(-50%);
+            z-index: -1;
+            border-radius: 2px;
+        }
+
+        .date-card {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px rgba(253, 121, 168, 0.15);
+            border: 2px solid rgba(253, 121, 168, 0.3);
+            position: relative;
+        }
+
+        .date-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(253, 121, 168, 0.25);
+            border-color: rgba(253, 121, 168, 0.6);
+        }
+
+        .date-card::before {
+            content: '❤️';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+            z-index: 10;
+        }
+
+        .date-preview {
+            display: flex;
+            padding: 1.5rem;
+            gap: 2rem;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .date-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #fd79a8, #e84393);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .date-card:hover .date-preview::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .preview-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ffd3e1;
+            box-shadow: 0 5px 15px rgba(232, 67, 147, 0.2);
+            transition: all 0.3s;
+        }
+
+        .date-card:hover .preview-image {
+            transform: scale(1.05);
+            border-color: #fd79a8;
+        }
+
+        .preview-info {
+            flex: 1;
+        }
+
+        .date {
+            font-size: 1.1rem;
+            color: #fd79a8;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: #fff0f7;
+            border-radius: 15px;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-family: 'Dancing Script', cursive;
+            color: #6c5ce7;
+        }
+
+        .expanded-content {
+            display: none;
+            padding: 1.5rem;
+            border-top: 2px dashed #ffd3e1;
+            background-color: #fff8fb;
+            position: relative;
+        }
+
+        .expanded-content::before,
+        .expanded-content::after {
+            content: '💕';
+            position: absolute;
+            font-size: 1.5rem;
+        }
+
+        .expanded-content::before {
+            top: 10px;
+            left: 10px;
+        }
+
+        .expanded-content::after {
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid #ffd3e1;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05) rotate(2deg);
+            border-color: #fd79a8;
+            box-shadow: 0 8px 20px rgba(232, 67, 147, 0.2);
+        }
+
+        .description {
+            line-height: 1.8;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background-color: white;
+            font-size: 1.1rem;
+            position: relative;
+            border: 1px solid #ffd3e1;
+        }
+
+        .description:hover {
+            background: #fff0f7;
+            border-color: #fd79a8;
+        }
+
+        .description::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 4rem;
+            color: #fd79a8;
+            font-family: Georgia, serif;
+            opacity: 0.3;
+        }
+
+        .description-textarea {
+            width: 100%;
+            min-height: 120px;
+            background: white;
+            border: 2px solid #ffd3e1;
+            border-radius: 12px;
+            color: #633974;
+            padding: 1rem;
+            font-family: inherit;
+            font-size: 1.1rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .description-textarea:focus {
+            outline: none;
+            border-color: #fd79a8;
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.2);
+        }
+
+        .edit-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .edit-btn, .save-btn, .cancel-btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .edit-btn::before {
+            content: '✏️';
+            font-size: 1.2rem;
+        }
+
+        .save-btn::before {
+            content: '💖';
+            font-size: 1.2rem;
+        }
+
+        .cancel-btn::before {
+            content: '❌';
+            font-size: 1rem;
+        }
+
+        .edit-btn {
+            background: #ffd3e1;
+            color: #633974;
+            border: 2px solid transparent;
+        }
+
+        .save-btn {
+            background: #fd79a8;
+            color: white;
+            border: 2px solid transparent;
+        }
+
+        .cancel-btn {
+            background: white;
+            color: #633974;
+            border: 2px solid #ffd3e1;
+        }
+
+        .edit-btn:hover, .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.3);
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-3px);
+            border-color: #fd79a8;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        .footer::before,
+        .footer::after {
+            content: '💞';
+            position: absolute;
+            font-size: 2rem;
+            top: 20px;
+        }
+
+        .footer::before {
+            left: 30%;
+        }
+
+        .footer::after {
+            right: 30%;
+        }
+
+        .home-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 10px 20px rgba(232, 67, 147, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #e84393, #fd79a8);
+            z-index: -1;
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+
+        .home-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(232, 67, 147, 0.4);
+        }
+
+        .home-button:hover::before {
+            opacity: 1;
+        }
+
+        /* Lightbox styles for full-size image view */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 15px;
+            border: 5px solid white;
+            box-shadow: 0 0 30px rgba(253, 121, 168, 0.5);
+        }
+
+        /* Heart animations */
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: floatUp 15s linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(20px) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        /* Heartbeat animation for special elements */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Adding more cute elements */
+        .love-icon {
+            display: inline-block;
+            margin: 0 5px;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #fff0f7;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e84393;
+        }
+        
+        /* Add button to add new memories */
+        .add-memory {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 5px 15px rgba(232, 67, 147, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .add-memory:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .image-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            border-radius: inherit;
+        }
+
+        .preview-image-container,
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        img.lazy {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        img.lazy.loaded {
+            opacity: 1;
+        }
+
+        .lightbox img {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .gallery-image {
+            cursor: pointer;
+        }
+        
+        .gallery-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(232, 67, 147, 0.3);
+        }
+
+        /* Close button styles */
+        .close-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(232, 67, 147, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .close-button:hover {
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 8px 20px rgba(232, 67, 147, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <a href="me.html" class="close-button">×</a>
+    <div class="header">
+        <h1>Our Love Story <span class="love-icon">💖</span></h1>
+    </div>
+
+    <div class="timeline">
+        <!-- Date cards will be generated by JavaScript -->
+    </div>
+    <button onclick="clearSavedDates()" style="position: fixed; bottom: 30px; left: 30px; padding: 10px; background: #fd79a8; color: white; border: none; border-radius: 5px; cursor: pointer;">Reset Dates</button>
+    
+    <div class="lightbox" onclick="closeLightbox()">
+        <img src="" alt="Full size image">
+    </div>
+    
+    <div class="add-memory" onclick="showAddMemoryForm()">+</div>
+    
+    <!-- Floating hearts background -->
+    <div class="floating-hearts" id="floating-hearts"></div>
+
+    <script>
+        // Sample data structure for dates
+        const dates = [
+            {
+                date: "September 5, 2024",
+                title: "Our First Date",
+                previewImage: "1/4.jpeg",
+                description: "",
+                photos: [
+                    
+                    "1/2.jpeg",
+                    "1/3.jpeg",
+                    "1/4.jpeg"
+                ]
+            },
+            {
+                date: "September 7, 2024",
+                title: "9libiya :3",
+                previewImage: "2/20.jpg",
+                description: "",
+                photos: [
+                    "2/1.jpg",
+                    "2/2.jpg",
+                    "2/3.jpg",
+                    "2/4.jpg",
+                    "2/5.jpg",
+                    "2/6.jpg",
+                    "2/7.jpg",
+                    "2/8.jpg",
+                    "2/9.jpg",
+                    "2/10.jpg", 
+                    "2/11.jpg",
+                    "2/12.jpg",
+                    "2/13.jpg",
+                    "2/14.jpg",
+                    "2/15.jpg",
+                    "2/16.jpg",
+                    "2/17.jpg",
+                    "2/18.jpg",
+                    "2/19.jpg",
+                    "2/20.jpg",
+                    "2/21.jpg",
+                    "2/22.jpg",
+                    "2/23.jpg",
+                    "2/24.jpg",
+                    "2/25.jpg",
+                    "2/26.jpg",
+                ]
+            },
+            {
+                date: "September 11, 2024",
+                title: "9orbos 💖 ",
+                previewImage: "3/6.jpg",
+                description: "",
+                photos: [
+                    "3/1.jpg",
+                    "3/2.jpg",
+                    "3/3.jpg",
+                    "3/4.jpg",
+                    "3/5.jpg",
+                    "3/6.jpg",
+                    "3/7.jpg",
+                ]
+            },
+            {
+                date: "September 15, 2024",
+                title: "Mouled yummies",
+                previewImage: "l/1.jpg",
+                description: "",
+                photos: [
+                    "l/1.jpg"
+                ]
+            },
+            {
+                date: "September 24, 2024",
+                title: "Best 5 minutes of my life",
+                previewImage: "l/2.jpg",
+                description: "we hugged so tight and u were energetic and so sweet Jebtlk hadiya fel recré ",
+                photos: [
+                    "l/2.jpg"
+                ]
+            },
+            {
+                date: "September 28, 2024",
+                title: "Bhar Nabeul ",
+                previewImage: "l/3.jpg",
+                description: "",
+                photos: [
+                    "l/3.jpg"
+                ]
+            },
+
+            {
+                date: "October 5, 2024",
+                title: "Cutest date",
+                previewImage: "4/1.jpg",
+                description: "",
+                photos: [
+                    "4/1.jpg",
+                    "4/2.jpg",
+                    "4/3.jpg",
+                    "4/4.jpg",
+                    "4/5.jpg",
+                    "4/6.jpg",
+                    "4/7.jpg",
+                    "4/8.jpg"
+                ]
+            },
+            {
+                date: "October 9, 2024",
+                title: "Picnic ttsma idc idc",
+                previewImage: "5/3.jpg",
+                description: "Klina chocola w sips 3al chat",
+                photos: [
+                    "5/1.jpg",
+                    "5/2.jpg",
+                    "5/3.jpg"
+                ]
+            },
+            {
+                date: "October 13, 2024",
+                title: "Casual walk on the beach",
+                previewImage: "6/1.jpg",
+                description: "",
+                photos: [
+                    "6/1.jpg",
+                    "6/2.jpg"
+                ]
+            },
+            {
+                date: "October 18, 2024",
+                title: "Your Birthday 💖",
+                previewImage: "l/4.jpg",
+                    description: "",
+                    photos: [
+                    "l/4.jpg",
+                ]
+            },
+            {
+                date: "October 24, 2024",
+                title: "Annoying you f violettes",
+                previewImage: "l/5.jpg",
+                description: "Nsit chsar ama jitk lel violettes w m5litkch trwh trte7",
+                photos: [
+                    "l/5.jpg"
+                ]
+            },
+            {
+                date: "October 27, 2024",
+                title: "Ma7leeeh date hedha",
+                previewImage: "m/2.jpg",
+                description: "",
+                photos: [
+                    "m/1.jpg",
+                    "m/2.jpg",
+                    "m/3.jpg",
+                    "m/4.jpg",
+                    "m/5.jpg"
+                ]
+            },
+            {
+                date: "November 7, 2024",
+                title: "Study date at the coffee ;3",
+                previewImage: "n/1.jpg",
+                description: "ofc we didnt study ",
+                photos: [
+                    "n/1.jpg",
+                    "n/2.jpg",
+                    "n/3.jpg",
+                    "n/4.jpg",
+                    "n/5.jpg",
+                    "n/6.jpg",
+                    "n/7.jpg"
+                ]
+            },
+            {
+                date: "November 10, 2024",
+                title: "mrezgua beach",
+                previewImage: "o/3.jpg",
+                description: "u were umcomfy chwy sowwy b3dika sabt alina lmtar t5abina t7t parasol ",
+                photos: [
+                    "o/1.jpg",
+                    "o/2.jpg",
+                    "o/3.jpg"
+                ]
+            },
+            {
+                date: "November 24, 2024",
+                title: "Aban milfeuille ",
+                previewImage: "p/5.jpg",
+                description: "",
+                photos: [
+                    "p/1.jpg",
+                    "p/2.jpg",
+                    "p/3.jpg",
+                    "p/4.jpg",
+                    "p/5.jpg"
+                ]
+            },
+            {
+                date: "November 30, 2024",
+                title: "Hammamet 💖",
+                previewImage: "q/1.jpg",
+                description: "",
+                photos: [
+                    "q/1.jpg",
+                    "q/2.jpg",
+                    "q/3.jpg",
+                    "q/4.jpg",
+                    "q/5.jpg",
+                    "q/6.jpg",
+                    "q/7.jpg",
+                    "q/8.jpg"
+                ]
+            },
+            {
+                date: "December 5, 2024",
+                title: "ma7rsi lghali",
+                previewImage: "r/11.jpg",
+                description: "",
+                photos: [
+                    "r/1.jpg",
+                    "r/2.jpg",
+                    "r/3.jpg",
+                    "r/4.jpg",
+                    "r/5.jpg",
+                    "r/6.jpg",
+                    "r/7.jpg",
+                    "r/8.jpg",
+                    "r/9.jpg",
+                    "r/10.jpg",
+                    "r/11.jpg"
+                ]
+            },
+            {
+                date: "December 14, 2024",
+                title: "ma7lena hne f hamamet :3",
+                previewImage: "s/5.jpg",
+                description: "",
+                photos: [
+                    "s/1.jpg",
+                    "s/2.jpg",
+                    "s/3.jpg",
+                    "s/4.jpg",
+                    "s/5.jpg",
+                    "s/6.jpg",
+                    "s/7.jpg",
+                    "s/8.jpg",
+                    "s/9.jpg",
+                    "s/10.jpg",
+                    "s/11.jpg",
+                    "s/12.jpg",
+                    "s/13.jpg",
+                    "s/14.mp4"
+                ]
+            },
+            {
+                date: "January 12, 2025",
+                title: "loving u so much 💖",
+                previewImage: "t/14.jpg",
+                description: "",
+                photos: [
+                    "t/1.jpg",
+                    "t/2.jpg",
+                    "t/3.jpg",
+                    "t/4.jpg",
+                    "t/5.jpg",
+                    "t/6.jpg",
+                    "t/7.jpg",
+                    "t/8.jpg",
+                    "t/9.jpg",
+                    "t/10.jpg",
+                    "t/11.jpg",
+                    "t/12.jpg",
+                    "t/13.jpg",
+                    "t/14.jpg",
+                    "t/15.jpg",
+                    "t/16.jpg",
+                    "t/17.jpg",
+                    "t/18.jpg"
+                ]
+            }
+        ];
+        function createTimeline() {
+    const timeline = document.querySelector('.timeline');
+    timeline.innerHTML = ''; // Clear existing content
+    
+    dates.forEach((date, index) => {
+        // Check if the image path exists
+        const previewImage = date.previewImage || (date.photos && date.photos.length > 0 ? date.photos[0] : '');
+        
+        const card = document.createElement('div');
+        card.className = 'date-card';
+        
+        const datePreview = document.createElement('div');
+        datePreview.className = 'date-preview';
+        datePreview.innerHTML = `
+            <div class="preview-image-container">
+                <div class="image-placeholder"></div>
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+                     data-src="${previewImage}" 
+                     alt="Preview" 
+                     class="preview-image lazy"
+                     onerror="this.src='https://via.placeholder.com/150'">
+            </div>
+            <div class="preview-info">
+                <div class="date">${date.date}</div>
+                <div class="title">${date.title}</div>
+            </div>
+        `;
+        datePreview.addEventListener('click', () => toggleExpand(index));
+        
+        const expandedContent = document.createElement('div');
+        expandedContent.className = 'expanded-content';
+        expandedContent.id = `content-${index}`;
+        
+        // Create photo gallery with lazy loading
+        let photoGalleryHTML = '<div class="photo-gallery">';
+        if (date.photos && date.photos.length > 0) {
+            date.photos.forEach((photo, photoIndex) => {
+                photoGalleryHTML += `
+                    <div class="gallery-item">
+                        <div class="image-placeholder"></div>
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
+                             data-src="${photo}" 
+                             alt="Memory" 
+                             class="gallery-image lazy"
+                             data-index="${photoIndex}"
+                             onclick="openLightbox('${photo}')"
+                             onerror="this.src='https://via.placeholder.com/200'">
+                    </div>
+                `;
+            });
+        } else {
+            photoGalleryHTML += '<p>No photos available</p>';
+        }
+        photoGalleryHTML += '</div>';
+        
+        expandedContent.innerHTML = `
+            ${photoGalleryHTML}
+            <div class="description-container">
+                <div class="description" id="description-${index}">
+                    ${date.description}
+                    <div class="edit-buttons">
+                        <button class="edit-btn" id="edit-btn-${index}">Edit Memory</button>
+                    </div>
+                </div>
+                <div class="edit-description" id="edit-description-${index}" style="display: none;">
+                    <textarea class="description-textarea" id="textarea-${index}">${date.description}</textarea>
+                    <div class="edit-buttons">
+                        <button class="save-btn" id="save-btn-${index}">Save</button>
+                        <button class="cancel-btn" id="cancel-btn-${index}">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        card.appendChild(datePreview);
+        card.appendChild(expandedContent);
+        timeline.appendChild(card);
+        
+        // Add event listeners after elements are added to the DOM
+        document.getElementById(`edit-btn-${index}`).addEventListener('click', (e) => {
+            e.stopPropagation();
+            enableEdit(index);
+        });
+        
+        document.getElementById(`save-btn-${index}`).addEventListener('click', (e) => {
+            e.stopPropagation();
+            saveDescription(index);
+        });
+        
+        document.getElementById(`cancel-btn-${index}`).addEventListener('click', (e) => {
+            e.stopPropagation();
+            cancelEdit(index);
+        });
+    });
+
+    // Initialize lazy loading after creating the timeline
+    initializeLazyLoading();
+}
+
+// Lazy loading implementation
+function initializeLazyLoading() {
+    const lazyImages = document.querySelectorAll('img.lazy');
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                loadImage(img);
+                observer.unobserve(img);
+            }
+        });
+    }, {
+        rootMargin: '50px 0px',
+        threshold: 0.1
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+}
+
+function loadImage(img) {
+    const src = img.getAttribute('data-src');
+    if (!src) return;
+
+    // Create a new image to preload
+    const tempImage = new Image();
+    tempImage.onload = () => {
+        img.src = src;
+        img.classList.add('loaded');
+        // Remove placeholder
+        const placeholder = img.parentElement.querySelector('.image-placeholder');
+        if (placeholder) {
+            placeholder.style.display = 'none';
+        }
+    };
+    tempImage.src = src;
+}
+
+function toggleExpand(index) {
+    const content = document.getElementById(`content-${index}`);
+    const currentDisplay = content.style.display;
+    
+    if (currentDisplay !== 'block') {
+        // Load visible images in the gallery when expanding
+        const galleryImages = content.querySelectorAll('img.lazy');
+        galleryImages.forEach(img => {
+            if (isElementInViewport(img)) {
+                loadImage(img);
+            }
+        });
+    }
+    
+    content.style.display = currentDisplay === 'block' ? 'none' : 'block';
+}
+
+function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
+
+function enableEdit(index) {
+    const descriptionDiv = document.getElementById(`description-${index}`);
+    const editDiv = document.getElementById(`edit-description-${index}`);
+    
+    descriptionDiv.style.display = 'none';
+    editDiv.style.display = 'block';
+    
+    // Focus on the textarea
+    const textarea = document.getElementById(`textarea-${index}`);
+    textarea.focus();
+}
+
+function saveDescription(index) {
+    const textarea = document.getElementById(`textarea-${index}`);
+    const newDescription = textarea.value.trim();
+    
+    // Update the data
+    dates[index].description = newDescription;
+    
+    // Update the display
+    const descriptionDiv = document.getElementById(`description-${index}`);
+    descriptionDiv.innerHTML = newDescription + `
+        <div class="edit-buttons">
+            <button class="edit-btn" id="edit-btn-${index}">Edit Memory</button>
+        </div>
+    `;
+    
+    // Re-add the event listener to the new button
+    document.getElementById(`edit-btn-${index}`).addEventListener('click', (e) => {
+        e.stopPropagation();
+        enableEdit(index);
+    });
+    
+    // Switch back to display view
+    const editDiv = document.getElementById(`edit-description-${index}`);
+    descriptionDiv.style.display = 'block';
+    editDiv.style.display = 'none';
+    
+    // Save to localStorage
+    localStorage.setItem('loveStoryDates', JSON.stringify(dates));
+}
+
+function cancelEdit(index) {
+    const descriptionDiv = document.getElementById(`description-${index}`);
+    const editDiv = document.getElementById(`edit-description-${index}`);
+    
+    // Reset textarea to original value
+    const textarea = document.getElementById(`textarea-${index}`);
+    textarea.value = dates[index].description;
+    
+    // Switch back to display view
+    descriptionDiv.style.display = 'block';
+    editDiv.style.display = 'none';
+}
+
+function openLightbox(imageSrc) {
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    
+    // Show loading state
+    lightboxImg.style.opacity = '0';
+    lightbox.style.display = 'flex';
+    
+    // Load the full image
+    const fullImage = new Image();
+    fullImage.onload = () => {
+        lightboxImg.src = imageSrc;
+        lightboxImg.style.opacity = '1';
+    };
+    fullImage.src = imageSrc;
+    
+    event.stopPropagation();
+}
+
+function closeLightbox() {
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    lightboxImg.style.opacity = '0';
+    lightbox.style.display = 'none';
+}
+
+// Create floating hearts
+function createFloatingHearts() {
+    const heartsContainer = document.getElementById('floating-hearts');
+    const heartSymbols = ['❤️', '💖', '💕', '💓', '💘', '💗', '💝'];
+    
+    for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+        
+        // Random positioning
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDuration = `${15 + Math.random() * 10}s`;
+        heart.style.animationDelay = `${Math.random() * 5}s`;
+        
+        heartsContainer.appendChild(heart);
+    }
+}
+
+// Function to show add memory form (placeholder for future development)
+function showAddMemoryForm() {
+    alert('Coming soon pookie tw nzid brcha hajet ... 💖');
+    // You can implement a modal form here to add new memories
+}
+
+function throttleImageLoading() {
+    const images = Array.from(document.querySelectorAll('img[data-src]'));
+    let currentIndex = 0;
+    
+    function loadNext(count = 3) {
+        for (let i = 0; i < count && currentIndex < images.length; i++) {
+            const img = images[currentIndex++];
+            img.src = img.getAttribute('data-src');
+        }
+        
+        if (currentIndex < images.length) {
+            setTimeout(() => loadNext(count), 100);
+        }
+    }
+    
+    loadNext();
+}
+
+// Load saved dates from localStorage if available
+function loadSavedDates() {
+    try {
+        const savedDates = localStorage.getItem('loveStoryDates');
+        if (savedDates) {
+            const parsedDates = JSON.parse(savedDates);
+            // Only replace dates if there are saved dates
+            if (parsedDates && Array.isArray(parsedDates) && parsedDates.length > 0) {
+                // Replace the contents of the dates array
+                dates.splice(0, dates.length, ...parsedDates);
+            }
+        }
+    } catch (error) {
+        console.error('Error loading saved dates:', error);
+        // If there's an error, just use the default dates
+    }
+}
+
+function clearSavedDates() {
+    localStorage.removeItem('loveStoryDates');
+    // Reload with default dates
+    location.reload();
+}
+
+// Load saved dates and initialize the timeline
+// Replace the window.onload function with this:
+window.onload = function() {
+    loadSavedDates();
+    createTimeline();
+    createFloatingHearts();
+    lazyLoadImages();
+};
+    </script>
+</body>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why I Love You</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            /* Enhanced gradient with more depth and colors */
+            background: linear-gradient(to bottom, #050e1c, #0a192f, #20314f, #102442, #050e1c);
+            font-family: 'Arial', sans-serif;
+            color: white;
+        }
+
+        .stars-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* Enhanced stars with different sizes */
+        .star {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: white;
+            transform: translate(-50%, -50%);
+            animation: twinkle 3s infinite alternate;
+        }
+
+        .star.active {
+            width: 8px;
+            height: 8px;
+            box-shadow: 0 0 10px 2px #fff,
+                        0 0 20px 4px rgba(255, 255, 255, 0.5);
+            z-index: 5;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .message-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .message-card {
+            background: rgba(10, 25, 47, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px 30px;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1),
+                        inset 0 0 15px rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: auto;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .message-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: white;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        .message-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .message-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .home-button {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .home-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        /* Enhanced title styling */
+        .title {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            font-family: 'Playfair Display', serif, 'Arial';
+            font-weight: 400;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+            opacity: 0.9;
+            letter-spacing: 1px;
+            z-index: 10;
+            padding: 10px 20px;
+        }
+
+        .title .heart {
+            display: inline-block;
+            font-size: 1.5rem;
+            margin-left: 5px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Enhanced shooting star with better opacity and visual effect */
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(90deg, white, transparent);
+            pointer-events: none;
+        }
+
+        /* Background stars */
+        .background-star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Starlit Reasons <span class="heart">♡</span></div>
+    <a href="me.html" class="close-button">×</a>
+    <div class="stars-container"></div>
+    <div class="message-container">
+        <div class="message-card">
+            <p class="message-text"></p>
+        </div>
+    </div>
+
+    <script>
+        const loveReasons = [
+            "How you remember the small details about me.",
+            "Your ability to see the good in everything.",
+            "The comfort I feel just being near you.",
+            "The warmth of your embrace that feels like home.",
+            "How you encourage me to be my best self.",
+            "Ur pretty smile , ur dimples they brighten up my darkest days ",
+            "Ur humor , ur jokes , ur sarcasm always gets me",
+            "Your kindness towards others(moch wled) melts my heart ",
+            "The way your eyes light up when you're excited ",
+            "How you always know exactly what to say ",
+            "Your determination inspires me every day ",
+            "The way you care for me so deeply ",
+            "Your passion for the things you love ",
+            "How you make me feel safe and loved ",
+            "The little things you do to make me smile ",
+            "How Gorgeous , beatiful you are ",
+            "Your vibe , your personality , your aura",
+            "Your style , your fashion , your choices ",
+            "Your intelligence , your smartness , your knowledge ",
+            "Your kindness , your generosity , your compassion ",
+            "Your beauty , your grace , your elegance ",
+            "Your support , your understanding ",
+            "Your scent is so addictive , u always smell good",
+            "How soft your voice is , Truly my favorite sound in the world ",
+            "Your laugh is contagious , it makes me want to laugh with u ",
+            "How cute u are 💖",
+            "Your soft lips ",
+            "Your sweet kisses <3",
+            "The way your hug me so tight",
+            "How u always make me feel special ",
+            "The way you make me feel safe with your loyalty ",
+            "Your respect for me  ",
+            "How clean , how pure , how innocent u are ",
+            "How u reject other boys for me",
+            "Your dreamy eyes , your eye color , your eyelashes ,  your eyebrows",
+            "How you're always patient with me ",
+            "How u always make me wanted needed and a priority in your life ",
+            "How you want my kids , how you want to start a family with me :3",
+            "How you want to be my wife heheheh ",
+            "The way you act like a child and make me act like a child ",
+            "The way you act like my sweet baby sometimes and like a caring mother sometimes ",
+
+        ];
+
+        function createStars() {
+            const container = document.querySelector('.stars-container');
+            const numStars = loveReasons.length;
+
+            // Create interactive stars for reasons
+            loveReasons.forEach((reason, index) => {
+                const star = document.createElement('div');
+                star.className = 'star';
+                // Position stars in a scattered pattern
+                star.style.left = `${Math.random() * 90 + 5}%`;
+                star.style.top = `${Math.random() * 80 + 10}%`;
+                
+                // Randomize star sizes slightly
+                const size = 3 + Math.random() * 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                star.addEventListener('click', () => showMessage(reason, star));
+                container.appendChild(star);
+            });
+            
+            // Add background stars for ambiance (non-interactive)
+            for (let i = 0; i < 150; i++) {
+                const bgStar = document.createElement('div');
+                bgStar.className = 'background-star';
+                
+                const size = Math.random() * 2;
+                bgStar.style.width = `${size}px`;
+                bgStar.style.height = `${size}px`;
+                bgStar.style.left = `${Math.random() * 100}%`;
+                bgStar.style.top = `${Math.random() * 100}%`;
+                bgStar.style.opacity = Math.random() * 0.8 + 0.2;
+                
+                // Add subtle twinkle animation with random duration
+                bgStar.style.animation = `twinkle ${2 + Math.random() * 3}s infinite alternate`;
+                container.appendChild(bgStar);
+            }
+        }
+
+        function showMessage(message, star) {
+            const messageText = document.querySelector('.message-text');
+            const messageCard = document.querySelector('.message-card');
+            const allStars = document.querySelectorAll('.star');
+            
+            // Reset all stars
+            allStars.forEach(s => s.classList.remove('active'));
+            
+            // Activate clicked star
+            star.classList.add('active');
+            
+            // Display message
+            messageText.textContent = message;
+            messageCard.classList.add('active');
+            
+            // Add click handler to close message
+            messageCard.onclick = () => {
+                messageCard.classList.remove('active');
+                star.classList.remove('active');
+            };
+            
+            // Auto-hide after 15 seconds
+            clearTimeout(window.messageTimeout);
+            window.messageTimeout = setTimeout(() => {
+                messageCard.classList.remove('active');
+                star.classList.remove('active');
+            }, 15000);
+        }
+
+        function createShootingStar() {
+            const container = document.querySelector('.stars-container');
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            
+            // Random starting position and direction
+            const direction = Math.floor(Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
+            let startX, startY, angle, distance;
+            
+            switch(direction) {
+                case 0: // from top
+                    startX = Math.random() * window.innerWidth;
+                    startY = -10;
+                    angle = Math.random() * 30 + 30; // 30-60 degrees
+                    break;
+                case 1: // from right
+                    startX = window.innerWidth + 10;
+                    startY = Math.random() * window.innerHeight;
+                    angle = Math.random() * 30 + 120; // 120-150 degrees
+                    break;
+                case 2: // from bottom
+                    startX = Math.random() * window.innerWidth;
+                    startY = window.innerHeight + 10;
+                    angle = Math.random() * 30 + 210; // 210-240 degrees
+                    break;
+                case 3: // from left
+                    startX = -10;
+                    startY = Math.random() * window.innerHeight;
+                    angle = Math.random() * 30 + 300; // 300-330 degrees
+                    break;
+            }
+            
+            distance = Math.random() * 500 + 500; // Distance between 500 and 1000 pixels
+            
+            star.style.left = `${startX}px`;
+            star.style.top = `${startY}px`;
+            container.appendChild(star);
+            
+            // Convert angle to radians for Math functions
+            const angleRad = (angle * Math.PI) / 180;
+            
+            star.animate([
+                { transform: 'translate(0, 0)' },
+                { transform: `translate(${distance * Math.cos(angleRad)}px, ${distance * Math.sin(angleRad)}px)` }
+            ], {
+                duration: Math.random() * 1000 + 1000, // 1-2 seconds
+                easing: 'linear'
+            }).onfinish = () => star.remove();
+        }
+
+        // Create multiple shooting stars
+        function createMultipleShootingStars() {
+            const count = Math.random() < 0.5 ? 1 : 2; // 50% chance of creating 1 or 2 stars
+            for(let i = 0; i < count; i++) {
+                createShootingStar();
+            }
+        }
+
+        // Initialize stars
+        createStars();
+
+        // Create shooting stars more frequently (every 1 second)
+        setInterval(createMultipleShootingStars, 1000);
+    </script>
+
+</body>
+</html>
